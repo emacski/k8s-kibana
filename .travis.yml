@@ -1,0 +1,16 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - if [ -z "$TRAVIS_TAG" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+    make build GIT_URL="https://github.com/$TRAVIS_REPO_SLUG" GIT_COMMIT=$TRAVIS_COMMIT VERSION=master;
+    make push VERSION=master;
+    elif [ "$TRAVIS_TAG" ]; then
+    ver=${TRAVIS_TAG#"v"};
+    make release GIT_URL="https://github.com/$TRAVIS_REPO_SLUG" GIT_COMMIT=$TRAVIS_COMMIT VERSION=$ver;
+    else
+    echo "Nothing to build";
+    fi;

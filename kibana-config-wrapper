@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+env-config-writer /kibana.yml.etp /kibana-$KIBANA_VERSION-linux-x86_64/config/kibana.yml
+
+su-exec kibana /kibana-$KIBANA_VERSION-linux-x86_64/bin/kibana "$@"
