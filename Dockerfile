@@ -4,7 +4,7 @@ FROM alpine:3.6
 LABEL image.name="k8s-kibana" \
       image.maintainer="Erik Maciejewski <mr.emacski@gmail.com>"
 
-ENV KIBANA_VERSION=5.4.1
+ENV KIBANA_VERSION=5.5.0
 
 RUN apk --no-cache add \
     'su-exec>=0.2' \
