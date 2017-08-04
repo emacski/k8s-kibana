@@ -17,8 +17,8 @@ build:
 
 build-proxy:
 	echo 'FROM $(NS)/$(REPO):$(VERSION)\n'\
-	'ENV KIBANA_BASE_URL=/api/v1/proxy/namespaces/kube-system/services/kibana-logging\n'\
-	'RUN kibana-$$KIBANA_VERSION-linux-x86_64/bin/kibana --server.basePath="$$KIBANA_BASE_URL" 2>&1 | grep -m 1 "Optimization .* complete"' \
+	'ENV kibana_base_url=/api/v1/proxy/namespaces/kube-system/services/kibana-logging\n'\
+	'RUN kibana/bin/kibana --server.basePath="$$kibana_base_url" 2>&1 | grep -m 1 "Optimization .* complete"' \
 		> Dockerfile-proxy
 	docker build -f Dockerfile-proxy -t $(NS)/$(REPO):$(VERSION)-proxy .
 	rm -f Dockerfile-proxy

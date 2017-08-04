@@ -4,22 +4,22 @@ FROM alpine:3.6
 LABEL image.name="k8s-kibana" \
       image.maintainer="Erik Maciejewski <mr.emacski@gmail.com>"
 
-ENV KIBANA_VERSION=5.5.0
+ENV REDACT_VERSION=0.1.0 \
+    KIBANA_VERSION=5.5.1
 
 RUN apk --no-cache add \
-    'su-exec>=0.2' \
-    bash \
     nodejs \
     curl \
-  # install utils
-  && curl -L https://github.com/emacski/env-config-writer/releases/download/v0.1.0/env-config-writer -o /usr/local/bin/env-config-writer \
-  && chmod +x /usr/local/bin/env-config-writer \
+  # install redact
+  && curl -L https://github.com/emacski/redact/releases/download/v$REDACT_VERSION/redact -o /usr/bin/redact \
+  && chmod +x /usr/bin/redact \
   # install kibana
   && curl -L https://artifacts.elastic.co/downloads/kibana/kibana-$KIBANA_VERSION-linux-x86_64.tar.gz -o kibana-$KIBANA_VERSION-linux-x86_64.tar.gz \
   && tar -xf kibana-$KIBANA_VERSION-linux-x86_64.tar.gz \
+  && mv kibana-$KIBANA_VERSION-linux-x86_64 kibana \
   && adduser -HD kibana kibana \
   # clean up
-  && rm -rf kibana-$KIBANA_VERSION-linux-x86_64/node \
+  && rm -rf kibana/node \
   && rm -f kibana-$KIBANA_VERSION-linux-x86_64.tar.gz \
   && apk del curl
 
@@ -33,4 +33,8 @@ ARG GIT_COMMIT=none
 LABEL build.git.url=$GIT_URL \
       build.git.commit=$GIT_COMMIT
 
-ENTRYPOINT ["/kibana-config-wrapper"]
+ENTRYPOINT ["redact", "entrypoint", \
+            "--default-tpl-path", "/kibana.yml.redacted", \
+            "--default-cfg-path", "/kibana/config/kibana.yml", \
+            "--", \
+            "kibana", "/kibana/bin/kibana"]

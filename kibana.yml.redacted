@@ -108,7 +108,3 @@ elasticsearch.url: "{{.kibana_elasticsearch_url}}"
 # The default locale. This locale can be used in certain circumstances to substitute any missing
 # translations.
 #i18n.defaultLocale: "en"
-
-{{if .kibana_extended_config}}
-{{.kibana_extended_config}}
-{{end}}
