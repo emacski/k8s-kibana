@@ -9,7 +9,7 @@ Alternative kibana docker image designed as a drop-in replacement for the kibana
 
 | Component | Version |
 | --------- | ------- |
-| kibana | 5.5.1 |
+| kibana | 5.5.2 |
 
 **Configuration**
 
