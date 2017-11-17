@@ -9,7 +9,7 @@ Alternative kibana docker image designed as a drop-in replacement for the kibana
 
 | Component | Version |
 | --------- | ------- |
-| kibana | 5.6.3 |
+| kibana | 6.0.0 |
 
 **Configuration**
 
@@ -28,7 +28,7 @@ The first and default image has Kibana configured to be accessed at the root url
 
 The second image (the suffix `-proxy` is appended to the image tag) pre-builds the Kibana assets to be accessed at a proxy path assumed to be `/api/v1/proxy/namespaces/kube-system/services/kibana-logging`. This is suitable for use with `kubectl proxy` (example: http://localhost:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging). Note that the actual path is determined by the Kibana Kubernetes service definition. The example service definition below produces the above proxy path.
 
-Either of these images can use the `KIBANA_BASE_URL` env variable to override the proxy path, but this will require Kibana to rebuild assets for each new container instance at runtime.
+Either of these images can use the `kibana_base_url` env variable to override the proxy path, but this will require Kibana to rebuild assets for each new container instance at runtime.
 
 **Example ReplicaSet Deployment**
 ```yaml
