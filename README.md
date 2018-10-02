@@ -9,26 +9,16 @@ Alternative kibana docker image designed as a drop-in replacement for the kibana
 
 | Component | Version |
 | --------- | ------- |
-| kibana | 6.0.0 |
+| kibana | 6.4.2 |
 
 **Configuration**
 
-Uses [ReDACT](https://github.com/emacski/redact) for kibana configuration.
+Uses [ReDACT](https://github.com/emacski/redact) for simple kibana configuration.
 
 | Environment Variable | Description |
 | -------------------- | ----------- |
-| `kibana_base_url` | The base url to service kibana from, useful if proxying kibana (Default: `/` or `/api/v1/proxy/namespaces/kube-system/services/kibana-logging` for `-proxy` images) |
+| `kibana_base_url` | The base url to serve kibana from, useful if proxying kibana (Default: `/`) |
 | `kibana_elasticsearch_url` | The url of the Elasticsearch instance kibana uses for all queries (Default: `http://localhost:9200`) |
-
-**Images**
-
-Two images are produced to help speed up provisioning of the Kibana containers.
-
-The first and default image has Kibana configured to be accessed at the root url (example: http://kibana.myorg.com/). This is useful when using NodePorts or load balancers for cluster services.
-
-The second image (the suffix `-proxy` is appended to the image tag) pre-builds the Kibana assets to be accessed at a proxy path assumed to be `/api/v1/proxy/namespaces/kube-system/services/kibana-logging`. This is suitable for use with `kubectl proxy` (example: http://localhost:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging). Note that the actual path is determined by the Kibana Kubernetes service definition. The example service definition below produces the above proxy path.
-
-Either of these images can use the `kibana_base_url` env variable to override the proxy path, but this will require Kibana to rebuild assets for each new container instance at runtime.
 
 **Example ReplicaSet Deployment**
 ```yaml
@@ -51,7 +41,7 @@ spec:
     spec:
       containers:
       - name: kibana-logging
-        image: emacski/k8s-kibana:latest-proxy
+        image: emacski/k8s-kibana:latest
         resources:
           # keep request = limit to keep this container in guaranteed class
           limits:
@@ -61,7 +51,6 @@ spec:
         env:
           - name: "kibana_elasticsearch_url"
             value: "http://elasticsearch-logging:9200"
-          # when using a "-proxy" image, the following is not required
           - name: "kibana_base_url"
             value: "/api/v1/proxy/namespaces/kube-system/services/kibana-logging"
         ports:

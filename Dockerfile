@@ -1,11 +1,11 @@
-FROM alpine:3.6
+FROM alpine:3.8
 
 # image metadata
 LABEL image.name="k8s-kibana" \
       image.maintainer="Erik Maciejewski <mr.emacski@gmail.com>"
 
 ENV REDACT_VERSION=0.2.0 \
-    KIBANA_VERSION=6.0.0
+    KIBANA_VERSION=6.4.2
 
 RUN apk --no-cache add \
         nodejs \
