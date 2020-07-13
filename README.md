@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/emacski/k8s-kibana.svg?branch=master)](https://travis-ci.org/emacski/k8s-kibana)
+# DEPRECATED
 
-Kubernetes Kibana
------------------
+This project is **obsolete** and no longer maintained. Refer to https://kubernetes.io/docs/home/ for kubernetes logging configuration.
+
+## Kubernetes Kibana
 
 Alternative kibana docker image designed as a drop-in replacement for the kibana-image in the fluentd-elasticsearch cluster-level logging addon.
 
